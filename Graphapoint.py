@@ -4,8 +4,24 @@ root = tk.Tk()
 root.title("Graphapoint")
 root.geometry("600x600")
 
-label = tk.Label(root, text="Welcome to Graphapoint! Choose a point to graph: x,y")
-label.pack(pady=15)
+def clear_screen():
+    for widget in root.winfo_children():
+        widget.destroy()
+
+def build_start_screen():
+    global label, entry, button, start_button
+
+    label = tk.Label(root, text="Welcome to Graphapoint! Choose a point to graph: x,y")
+    label.pack(pady=15)
+
+    entry = tk.Entry(root)
+    entry.pack(pady=10)
+
+    button = tk.Button(root, text="Submit", command=input_point)
+    button.pack(pady=10)
+
+    start_button = tk.Button(root, text="Start Graphapoint", command=start)
+    # ❌ REMOVED start_button.pack() from here
 
 def start():
     
@@ -85,9 +101,16 @@ def start():
     draw_point(point)
     draw_line(point)
 
+    root.after(5000, show_restart_button)
 
+def show_restart_button():
+    clear_screen()
+    restart_btn = tk.Button(root, text="Restart", command=restart)
+    restart_btn.pack(pady=200)
 
-start_button = tk.Button(root, text="Start Graphapoint", command=start)
+def restart():
+    clear_screen()
+    build_start_screen()
 
 def input_point():
     global point
@@ -96,18 +119,12 @@ def input_point():
     root.after(2000,swap_widget)
     label.config(text=f"You entered: {point}")
 
-entry = tk.Entry(root)
-entry.pack(pady=10)
-
-button = tk.Button(root, text="Submit", command=input_point)
-button.pack(pady=10)
-
 def swap_widget():
-    button.destroy()
+    button.destroy()    
     label.destroy()
     entry.destroy()
     start_button.pack(pady=75)
 
-
+build_start_screen()
 
 root.mainloop()

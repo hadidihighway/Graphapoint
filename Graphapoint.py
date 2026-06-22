@@ -101,7 +101,7 @@ def start():
     draw_point(point)
     draw_line(point)
 
-    root.after(5000, show_restart_button)
+    root.after(3000, show_restart_button)
 
 def show_restart_button():
     clear_screen()
@@ -116,7 +116,7 @@ def input_point():
     global point
     point = tuple(int(x) for x in entry.get().split(','))
     print("Input Value:", point)
-    root.after(2000,swap_widget)
+    root.after(1000,swap_widget)
     label.config(text=f"You entered: {point}")
 
 def swap_widget():

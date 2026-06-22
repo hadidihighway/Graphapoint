@@ -9,6 +9,7 @@ label.pack(pady=15)
 
 def start():
     
+    
     print("Graphapoint started!")
 
 
@@ -31,49 +32,60 @@ def start():
 
     canvas.create_line(cx, 0, cx, height, fill="black", width=2)
     canvas.create_line(0, cy, width, cy, fill="black", width=2)
-
-
     
-    def to_canvas(x, y, scale=spacing):
-        return cx + x * scale, cy - y * scale
 
     def draw_point(point):
         x, y = point
         canvas_x, canvas_y = to_canvas(x, y)
         canvas.create_oval(canvas_x-6, canvas_y-6, canvas_x+6, canvas_y+6, fill="red")
-    # draw the point and the line only if a point has been submitted
-    if 'point' in globals():
-        draw_point(point)
-        # line y = x + b that passes through the point: b = y - x
-        b = point[1] - point[0]
-        draw_y_equals_x_plus_b(canvas, b=b, scale=spacing, color="blue", width=2)
-    else:
-        label.config(text="No point provided — please Submit a point first")
+    
+    def to_canvas(x, y):
+        canvas_x = cx + x * spacing
+        canvas_y = cy - y * spacing
+        return canvas_x, canvas_y
 
-def draw_y_equals_x_plus_b(canvas, b, scale=25, color="blue", width=2):
-    # canvas pixel size and Cartesian center
-    W = int(canvas["width"])
-    H = int(canvas["height"])
-    cx = W / 2
-    cy = H / 2
+    def draw_line(point):
+        x,y = point
+        b = calculate_b(point)
+        x_back = -1 * ((width//spacing)//2)
+        y_back = -1 * ((width//spacing)//2)
+        x_front = (width//spacing)//2
+        y_front = (width//spacing)//2
+        if y > 0:
+            y1 = x_back + b
+            x1 = x_back
+            y2 = x_front + b
+            x2 = x_front
 
-    m = 1  # slope for y = x + b
+        if y < 0:
+            x1 = y_back - b
+            y1 = y_back
+            y2 = x_front - b
+            x2 = x_front
 
-    # math x at canvas left and right edges
-    x_left = (0 - cx) / scale
-    x_right = (W - cx) / scale
+        if y == 0 and x == 0:
+            x1 = -12
+            y1 = -12
+            y2 = 12
+            x2 = 12
+        
+        canvas_x1, canvas_y1 = to_canvas(x1,y1)
+        canvas_x2, canvas_y2 = to_canvas(x2,y2)
+        canvas.create_line(canvas_x1,canvas_y1,canvas_x2,canvas_y2,fill="blue",width=2)
 
-    # compute corresponding math y using y = m*x + b
-    y_left = m * x_left + b
-    y_right = m * x_right + b
+    def calculate_b(point):
+        x,y = point
+        b = y - x
+        return b
+    
 
-    # convert math coords to canvas pixels
-    px_left = cx + x_left * scale
-    py_left = cy - y_left * scale
-    px_right = cx + x_right * scale
-    py_right = cy - y_right * scale
 
-    canvas.create_line(px_left, py_left, px_right, py_right, fill=color, width=width)
+
+ 
+    draw_point(point)
+    draw_line(point)
+
+
 
 start_button = tk.Button(root, text="Start Graphapoint", command=start)
 
@@ -81,7 +93,7 @@ def input_point():
     global point
     point = tuple(int(x) for x in entry.get().split(','))
     print("Input Value:", point)
-    root.after(5000,swap_widget)
+    root.after(2000,swap_widget)
     label.config(text=f"You entered: {point}")
 
 entry = tk.Entry(root)
@@ -95,13 +107,6 @@ def swap_widget():
     label.destroy()
     entry.destroy()
     start_button.pack(pady=75)
-
-
-
-
-
-
-
 
 
 

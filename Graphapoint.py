@@ -1,8 +1,3 @@
-import tkinter as tk
-
-root = tk.Tk()
-import tkinter as tk
-
 # Default canvas settings (used by both GUI and web API)
 DEFAULT_WIDTH = 600
 DEFAULT_HEIGHT = 600
@@ -49,6 +44,11 @@ def line_endpoints(point, width=DEFAULT_WIDTH, spacing=DEFAULT_SPACING):
 
     return (x1, y1, x2, y2)
 
+
+try:
+    import tkinter as tk
+except ImportError:
+    tk = None
 
 # --- GUI code (only run when executed directly) ---
 
@@ -141,6 +141,8 @@ def swap_widget():
 
 
 if __name__ == '__main__':
+    if tk is None:
+        raise RuntimeError('Tkinter is not available in this environment')
     root = tk.Tk()
     root.title("Graphapoint")
     root.geometry(f"{DEFAULT_WIDTH}x{DEFAULT_HEIGHT}")

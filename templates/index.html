@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Graphapoint</title>
+		<link rel="stylesheet" href="/static/style.css" />
+	</head>
+	<body>
+		<main class="container">
+			<h1>Graphapoint</h1>
+
+			<div id="start-screen">
+				<p id="welcome">Welcome to Graphapoint! Choose a point to graph: x,y</p>
+				<input id="point-input" placeholder="e.g. 3,4" value="0,0" />
+				<div class="buttons">
+					<button id="submit-point">Submit</button>
+				</div>
+			</div>
+
+			<div id="confirm-screen" style="display:none">
+				<p id="entered"></p>
+				<div class="buttons">
+					<button id="start-graph">Start Graphapoint</button>
+				</div>
+			</div>
+
+			<div id="graph-screen" style="display:none">
+				<canvas id="graph" width="600" height="600"></canvas>
+			</div>
+
+			<div id="restart-screen" style="display:none">
+				<div class="buttons">
+					<button id="restart">Restart</button>
+				</div>
+			</div>
+
+			<p class="help">Enter integers separated by a comma. Example: <em>2,-1</em></p>
+		</main>
+
+		<script src="/static/main.js"></script>
+	</body>
+</html>
